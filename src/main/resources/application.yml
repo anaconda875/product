@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3311/productdb
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MariaDB106Dialect
+    show-sql: true
+  liquibase:
+    change-log: classpath:/master/changelog-master.xml
+    enabled: false
