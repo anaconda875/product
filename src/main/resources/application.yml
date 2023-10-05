@@ -1,3 +1,7 @@
+logging:
+  level:
+    net.ttddyy.dsproxy.listener: debug
+
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
@@ -5,10 +9,10 @@ spring:
     username: root
     password: root
   jpa:
-    hibernate:
-      ddl-auto: update
+#    hibernate:
+#      ddl-auto: update
     database-platform: org.hibernate.dialect.MariaDB106Dialect
     show-sql: true
   liquibase:
     change-log: classpath:/master/changelog-master.xml
-    enabled: false
+#    enabled: false
