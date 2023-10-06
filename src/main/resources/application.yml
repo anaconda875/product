@@ -12,7 +12,7 @@ spring:
 #    hibernate:
 #      ddl-auto: update
     database-platform: org.hibernate.dialect.MariaDB106Dialect
-    show-sql: true
+#    show-sql: true
   liquibase:
     change-log: classpath:/master/changelog-master.xml
 #    enabled: false

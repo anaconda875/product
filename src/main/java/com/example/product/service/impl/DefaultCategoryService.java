@@ -1,17 +1,20 @@
 package com.example.product.service.impl;
 
 import com.example.product.domain.model.Category;
+import com.example.product.dto.projection.CategoryProjection;
 import com.example.product.dto.request.CategoryRequest;
+import com.example.product.dto.request.CustomPageable;
 import com.example.product.dto.response.CategoryResponse;
 import com.example.product.exception.ResourceNotFoundException;
 import com.example.product.repository.CategoryRepository;
 import com.example.product.service.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,8 +33,44 @@ public class DefaultCategoryService implements CategoryService {
 
   @Override
   public CategoryResponse findById(Long id) {
-    return repository.findById(id).map(this::toResponse)
-      .orElseThrow(() -> new ResourceNotFoundException(String.format("Category with id [%d] is not found", id)));
+    List<CategoryProjection> projections = repository.findByIdIncludeChildrenRecursively(id);
+    if(CollectionUtils.isEmpty(projections)) {
+      throw new ResourceNotFoundException(String.format("Category with id [%d] is not found", id));
+    }
+
+    Map<Long, List<CategoryProjection>> parentMap = new LinkedHashMap<>();
+    for(CategoryProjection p : projections) {
+      Long parentId = p.getParentId();
+      List<CategoryProjection> tmp;
+      if(parentMap.containsKey(parentId)) {
+        tmp = parentMap.get(parentId);
+      } else {
+        tmp = new LinkedList<>();
+        parentMap.put(parentId, tmp);
+      }
+      tmp.add(p);
+    }
+
+    CategoryProjection first = projections.get(0);
+
+    CategoryResponse result = new CategoryResponse(first.getId(), first.getName(), buildChildren(first.getId(), parentMap));
+
+    return result;
+//    return repository.findById(id).map(this::toResponse)
+//      .orElseThrow(() -> new ResourceNotFoundException(String.format("Category with id [%d] is not found", id)));
+  }
+
+  @Override
+  public Page<CategoryResponse> findAll(CustomPageable pageable) {
+    return repository.findAll(pageable.getKw(), pageable).map(this::toResponse);
+  }
+
+
+  private List<CategoryResponse> buildChildren(Long id, Map<Long, List<CategoryProjection>> parentMap) {
+    List<CategoryProjection> children = Optional.ofNullable(parentMap.get(id)).orElseGet(Collections::emptyList);
+    return children.stream()
+      .map(child -> new CategoryResponse(child.getId(), child.getName(), buildChildren(child.getId(), parentMap)))
+      .collect(Collectors.toList());
   }
 
   private CategoryResponse toResponse(Category category) {

@@ -13,7 +13,7 @@ import java.util.List;
 @NamedEntityGraph(
   name = "test",
   attributeNodes = {
-    @NamedAttributeNode(value="children",subgraph="children"),
+    @NamedAttributeNode(value="children", subgraph="children"),
   },
   subgraphs = {
     @NamedSubgraph(
