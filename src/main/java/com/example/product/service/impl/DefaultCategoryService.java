@@ -8,6 +8,7 @@ import com.example.product.dto.response.CategoryResponse;
 import com.example.product.exception.ResourceNotFoundException;
 import com.example.product.repository.CategoryRepository;
 import com.example.product.service.CategoryService;
+import com.example.product.service.UniqueValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class DefaultCategoryService implements CategoryService {
+public class DefaultCategoryService implements CategoryService, UniqueValidationService<String> {
 
   private final CategoryRepository repository;
 
@@ -96,4 +97,13 @@ public class DefaultCategoryService implements CategoryService {
     return entity;
   }
 
+  @Override
+  public List<String> findInvalidFields(String name) {
+    int count = repository.countByName(name);
+    if(count > 0) {
+      return List.of("name");
+    }
+
+    return List.of();
+  }
 }

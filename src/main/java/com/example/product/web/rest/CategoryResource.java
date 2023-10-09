@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/categories")
 @RequiredArgsConstructor
@@ -16,7 +18,7 @@ public class CategoryResource {
   private final CategoryService service;
 
   @PostMapping
-  public CategoryResponse save(@RequestBody CategoryRequest categoryRequest) {
+  public CategoryResponse save(@Valid @RequestBody CategoryRequest categoryRequest) {
     return service.save(categoryRequest);
   }
 

@@ -13,6 +13,8 @@ import java.util.Optional;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
+  int countByName(String name);
+
   @Override
   @EntityGraph(value = "test", type = EntityGraph.EntityGraphType.LOAD)
   Optional<Category> findById(Long id);
