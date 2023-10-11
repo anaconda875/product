@@ -10,7 +10,8 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 @Component
-public class CustomPageableHandlerMethodArgumentResolver extends PageableHandlerMethodArgumentResolver {
+public class CustomPageableHandlerMethodArgumentResolver
+    extends PageableHandlerMethodArgumentResolver {
 
   @Override
   public boolean supportsParameter(MethodParameter methodParameter) {
@@ -18,8 +19,13 @@ public class CustomPageableHandlerMethodArgumentResolver extends PageableHandler
   }
 
   @Override
-  public Pageable resolveArgument(MethodParameter methodParameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-    Pageable pageable = super.resolveArgument(methodParameter, mavContainer, webRequest, binderFactory);
+  public Pageable resolveArgument(
+      MethodParameter methodParameter,
+      ModelAndViewContainer mavContainer,
+      NativeWebRequest webRequest,
+      WebDataBinderFactory binderFactory) {
+    Pageable pageable =
+        super.resolveArgument(methodParameter, mavContainer, webRequest, binderFactory);
     String kw = webRequest.getParameter(getParameterNameToUse("kw", methodParameter));
     return new CustomPageable(pageable, kw);
   }

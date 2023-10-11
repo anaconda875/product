@@ -10,5 +10,4 @@ public class ProductRequest {
   private Integer price;
   private Integer amount;
   private Product.Status status;
-
 }

@@ -4,11 +4,10 @@ import com.example.product.dto.request.CategoryRequest;
 import com.example.product.dto.request.CustomPageable;
 import com.example.product.dto.response.CategoryResponse;
 import com.example.product.service.CategoryService;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/categories")
@@ -19,6 +18,7 @@ public class CategoryResource {
 
   @PostMapping
   public CategoryResponse save(@Valid @RequestBody CategoryRequest categoryRequest) {
+    if (true) throw new RuntimeException();
     return service.save(categoryRequest);
   }
 
@@ -31,5 +31,4 @@ public class CategoryResource {
   public Page<CategoryResponse> findAll(CustomPageable pageable) {
     return service.findAll(pageable);
   }
-
 }
