@@ -18,7 +18,6 @@ public class CategoryResource {
 
   @PostMapping
   public CategoryResponse save(@Valid @RequestBody CategoryRequest categoryRequest) {
-    if (true) throw new RuntimeException();
     return service.save(categoryRequest);
   }
 
