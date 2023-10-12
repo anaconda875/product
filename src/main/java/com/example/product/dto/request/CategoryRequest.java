@@ -1,7 +1,7 @@
 package com.example.product.dto.request;
 
 import com.example.product.annotation.Unique;
-import com.example.product.dto.UniqueIdenfiable;
+import com.example.product.dto.UniqueIdentifiable;
 import com.example.product.service.impl.DefaultCategoryService;
 import java.util.List;
 import javax.validation.constraints.Size;
@@ -10,7 +10,9 @@ import org.hibernate.validator.constraints.Length;
 
 @Data
 @Unique(service = DefaultCategoryService.class)
-public class CategoryRequest implements UniqueIdenfiable<String> {
+public class CategoryRequest implements UniqueIdentifiable<String> {
+
+  private Long id;
 
   @Length(max = 1)
   private String name;
@@ -19,7 +21,7 @@ public class CategoryRequest implements UniqueIdenfiable<String> {
   private List<CategoryRequest> children;
 
   @Override
-  public String getId() {
+  public String getUniqueField() {
     return name;
   }
 }

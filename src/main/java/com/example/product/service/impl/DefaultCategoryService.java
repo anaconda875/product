@@ -104,10 +104,10 @@ public class DefaultCategoryService implements CategoryService, UniqueValidation
   @Override
   public List<String> findInvalidFields(String name) {
     int count = repository.countByName(name);
-    if (count > 0) {
-      return List.of("name");
+    if(count > 0) {
+      return List.of(name);
     }
 
-    return List.of();
+    return Collections.emptyList();
   }
 }

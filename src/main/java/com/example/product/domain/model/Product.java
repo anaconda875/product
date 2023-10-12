@@ -1,9 +1,12 @@
 package com.example.product.domain.model;
 
 import javax.persistence.*;
+
+import lombok.Builder;
 import lombok.Data;
 
 @Entity
+@Builder
 @Table(name = "tbl_product")
 @Data
 public class Product {
