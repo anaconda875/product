@@ -14,7 +14,7 @@ public class CustomPageable extends PageRequest {
     this(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort(), kw);
   }
 
-  protected CustomPageable(int page, int size, Sort sort, String kw) {
+  public CustomPageable(int page, int size, Sort sort, String kw) {
     super(page, size, sort);
     this.kw = kw;
   }
