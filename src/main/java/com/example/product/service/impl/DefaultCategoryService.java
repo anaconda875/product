@@ -57,9 +57,6 @@ public class DefaultCategoryService implements CategoryService, UniqueValidation
             first.getId(), first.getName(), buildChildren(first.getId(), parentMap));
 
     return result;
-    //    return repository.findById(id).map(this::toResponse)
-    //      .orElseThrow(() -> new ResourceNotFoundException(String.format("Category with id [%d] is
-    // not found", id)));
   }
 
   @Override

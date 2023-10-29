@@ -7,16 +7,17 @@ import com.example.product.dto.response.ProductResponse;
 import com.example.product.exception.ResourceNotFoundException;
 import com.example.product.repository.CategoryRepository;
 import com.example.product.repository.ProductRepository;
-import com.example.product.service.CategoryService;
 import com.example.product.service.ProductService;
+import com.example.product.service.UniqueValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
-public class DefaultProductService implements ProductService {
-
-    private final CategoryService categoryService;
+public class DefaultProductService implements ProductService, UniqueValidationService<String> {
 
     private final CategoryRepository categoryRepository;
 
@@ -43,4 +44,9 @@ public class DefaultProductService implements ProductService {
                 .build();
     }
 
+    @Override
+    public List<String> findInvalidFields(String name) {
+        int count = productRepository.countByName(name);
+        return count > 0 ? List.of(name) : Collections.emptyList();
+    }
 }
