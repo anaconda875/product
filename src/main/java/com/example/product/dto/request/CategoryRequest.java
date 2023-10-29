@@ -6,7 +6,6 @@ import com.example.product.service.impl.DefaultCategoryService;
 import java.util.List;
 import javax.validation.constraints.Size;
 import lombok.Data;
-import org.hibernate.validator.constraints.Length;
 
 @Data
 @Unique(service = DefaultCategoryService.class)
@@ -14,7 +13,6 @@ public class CategoryRequest implements UniqueIdentifiable<String> {
 
   private Long id;
 
-  @Length(max = 1)
   private String name;
 
   @Size(min = 0, max = 10)
