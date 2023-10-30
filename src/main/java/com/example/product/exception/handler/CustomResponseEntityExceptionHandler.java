@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-  @ExceptionHandler(RuntimeException.class)
+//  @ExceptionHandler(RuntimeException.class)
   public ResponseEntity<Object> handleRuntimeException(RuntimeException ex, WebRequest request) {
     ErrorResponse errorResponse = new ErrorResponse();
     errorResponse.setPath(((ServletWebRequest) request).getRequest().getRequestURI());

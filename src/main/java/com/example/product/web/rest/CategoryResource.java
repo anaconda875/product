@@ -7,6 +7,7 @@ import com.example.product.service.CategoryService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,10 +24,12 @@ public class CategoryResource {
 
   @GetMapping("/{id}")
   public CategoryResponse findById(@PathVariable Long id) {
+//    SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
     return service.findById(id);
   }
 
   @GetMapping
+  @PreAuthorize("hasRole('test')")
   public Page<CategoryResponse> findAll(CustomPageable pageable) {
     return service.findAll(pageable);
   }
