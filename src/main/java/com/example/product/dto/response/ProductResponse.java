@@ -22,7 +22,7 @@ public class ProductResponse {
 
     private Product.Status status;
 
-    //todo: add category, maybe don't include the children
+    private CategoryResponse categoryResponse;
 
     public ProductResponse(Product product) {
         this.id = product.getId();
@@ -30,5 +30,6 @@ public class ProductResponse {
         this.price = product.getPrice();
         this.amount = product.getAmount();
         this.status = product.getStatus();
+        this.categoryResponse = new CategoryResponse(product.getCategory());
     }
 }
