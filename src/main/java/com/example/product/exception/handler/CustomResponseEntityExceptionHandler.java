@@ -17,7 +17,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-  @ExceptionHandler(RuntimeException.class)
   public ResponseEntity<Object> handleRuntimeException(RuntimeException ex, WebRequest request) {
     ErrorResponse errorResponse = new ErrorResponse();
     errorResponse.setPath(((ServletWebRequest) request).getRequest().getRequestURI());
@@ -27,7 +26,6 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     // 3xx > redirection
     // 4xx > client error (bad request, v.v)
     // 5xx > server error (bad gateway, service un-avalable, v.v)
-
     return ResponseEntity.internalServerError().body(errorResponse);
   }
 

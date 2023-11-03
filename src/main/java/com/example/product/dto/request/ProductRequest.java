@@ -11,10 +11,13 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.Map;
 
 @Data
 @Unique(service = DefaultProductService.class)
-public class ProductRequest implements UniqueIdentifiable<String> {
+public class ProductRequest implements UniqueIdentifiable {
+
+  private Long id;
 
   @Length(max = 20)
   private String name;
@@ -32,7 +35,12 @@ public class ProductRequest implements UniqueIdentifiable<String> {
   private CategoryRequest category;
 
   @Override
-  public String getUniqueField() {
-    return name;
+  public Long getIdToCheck() {
+    return id;
+  }
+
+  @Override
+  public Map<String, Object> getUniqueFields() {
+    return Map.of("name", name);
   }
 }

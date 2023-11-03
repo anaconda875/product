@@ -4,12 +4,13 @@ import com.example.product.annotation.Unique;
 import com.example.product.dto.UniqueIdentifiable;
 import com.example.product.service.impl.DefaultCategoryService;
 import java.util.List;
+import java.util.Map;
 import javax.validation.constraints.Size;
 import lombok.Data;
 
 @Data
 @Unique(service = DefaultCategoryService.class)
-public class CategoryRequest implements UniqueIdentifiable<String> {
+public class CategoryRequest implements UniqueIdentifiable {
 
   private Long id;
 
@@ -19,7 +20,13 @@ public class CategoryRequest implements UniqueIdentifiable<String> {
   private List<CategoryRequest> children;
 
   @Override
-  public String getUniqueField() {
-    return name;
+  public Long getIdToCheck() {
+    return id;
   }
+
+  @Override
+  public Map<String, Object> getUniqueFields() {
+    return Map.of("name", name);
+  }
+
 }

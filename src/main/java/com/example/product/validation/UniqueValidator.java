@@ -26,7 +26,7 @@ public class UniqueValidator implements ConstraintValidator<Unique, UniqueIdenti
 
   @Override
   public boolean isValid(UniqueIdentifiable value, ConstraintValidatorContext context) {
-    List<String> invalidFields = validationService.findInvalidFields(value.getUniqueField());
+    List<String> invalidFields = validationService.findInvalidFields(value.getIdToCheck(), value.getUniqueFields());
     if (invalidFields == null || invalidFields.isEmpty()) {
       return true;
     }

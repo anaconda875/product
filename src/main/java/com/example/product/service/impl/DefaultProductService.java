@@ -4,6 +4,7 @@ import com.example.product.domain.model.Category;
 import com.example.product.domain.model.Product;
 import com.example.product.dto.request.ProductRequest;
 import com.example.product.dto.response.ProductResponse;
+import com.example.product.exception.BadRequestException;
 import com.example.product.exception.ResourceNotFoundException;
 import com.example.product.repository.CategoryRepository;
 import com.example.product.repository.ProductRepository;
@@ -14,10 +15,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class DefaultProductService implements ProductService, UniqueValidationService<String> {
+public class DefaultProductService implements ProductService, UniqueValidationService {
 
     private final CategoryRepository categoryRepository;
 
@@ -26,7 +28,7 @@ public class DefaultProductService implements ProductService, UniqueValidationSe
     @Override
     public ProductResponse save(ProductRequest request) {
         Category category = categoryRepository.findById(request.getCategory().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+                .orElseThrow(() -> new BadRequestException("Category not found"));
 
         Product entity = this.from(request);
         entity.setCategory(category);
@@ -45,7 +47,8 @@ public class DefaultProductService implements ProductService, UniqueValidationSe
     }
 
     @Override
-    public List<String> findInvalidFields(String name) {
+    public List<String> findInvalidFields(Long id, Map<String, Object> fields) {
+        String name = (String) fields.get("name");
         int count = productRepository.countByName(name);
         return count > 0 ? List.of(name) : Collections.emptyList();
     }

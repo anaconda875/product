@@ -1,6 +1,10 @@
 package com.example.product.dto;
 
-public interface UniqueIdentifiable<ID> {
+import java.util.Map;
 
-  ID getUniqueField();
+public interface UniqueIdentifiable {
+
+  Long getIdToCheck();
+
+  Map<String, Object> getUniqueFields();
 }
