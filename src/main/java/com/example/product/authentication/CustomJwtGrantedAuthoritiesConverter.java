@@ -1,5 +1,6 @@
 package com.example.product.authentication;
 
+import java.util.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.core.convert.converter.Converter;
@@ -10,14 +11,14 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
-
-public class CustomJwtGrantedAuthoritiesConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
+public class CustomJwtGrantedAuthoritiesConverter
+    implements Converter<Jwt, Collection<GrantedAuthority>> {
   private final Log logger = LogFactory.getLog(getClass());
 
   private static final String DEFAULT_AUTHORITY_PREFIX = "SCOPE_";
 
-  private static final Collection<String> WELL_KNOWN_AUTHORITIES_CLAIM_NAMES = Arrays.asList("scope", "scp");
+  private static final Collection<String> WELL_KNOWN_AUTHORITIES_CLAIM_NAMES =
+      Arrays.asList("scope", "scp");
 
   private String authorityPrefix = DEFAULT_AUTHORITY_PREFIX;
 
@@ -25,6 +26,7 @@ public class CustomJwtGrantedAuthoritiesConverter implements Converter<Jwt, Coll
 
   /**
    * Extract {@link GrantedAuthority}s from the given {@link Jwt}.
+   *
    * @param jwt The {@link Jwt} token
    * @return The {@link GrantedAuthority authorities} read from the token scopes
    */
@@ -62,7 +64,8 @@ public class CustomJwtGrantedAuthoritiesConverter implements Converter<Jwt, Coll
   private Collection<String> getAuthorities(Jwt jwt) {
     String claimName = getAuthoritiesClaimName(jwt);
     if (claimName == null) {
-      this.logger.trace("Returning no authorities since could not find any claims that might contain scopes");
+      this.logger.trace(
+          "Returning no authorities since could not find any claims that might contain scopes");
       return Collections.emptyList();
     }
     if (this.logger.isTraceEnabled()) {
@@ -75,11 +78,11 @@ public class CustomJwtGrantedAuthoritiesConverter implements Converter<Jwt, Coll
 
     if (authorities instanceof String) {
       if (StringUtils.hasText((String) authorities)) {
-//        return Arrays.asList(((String) authorities).split(" "));
+        //        return Arrays.asList(((String) authorities).split(" "));
         result.addAll(List.of(((String) authorities).split(" ")));
         result.addAll(roles);
       }
-//      return Collections.emptyList();
+      //      return Collections.emptyList();
     } else if (authorities instanceof Collection) {
       result = castAuthoritiesToCollection(authorities);
       result.addAll(roles);
@@ -91,7 +94,7 @@ public class CustomJwtGrantedAuthoritiesConverter implements Converter<Jwt, Coll
   private List<String> extractResourceAccess(Jwt jwt, String[] arr) {
     List<String> result = new ArrayList<>();
     Map<String, Object> resourceAccess = jwt.getClaim("resource_access");
-    for(String k : arr) {
+    for (String k : arr) {
       Map<String, Object> map = (HashMap<String, Object>) resourceAccess.get(k);
       List<String> roles = (List<String>) map.get("roles");
       result.addAll(roles);

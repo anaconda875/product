@@ -24,7 +24,7 @@ public class CategoryResource {
 
   @GetMapping("/{id}")
   public CategoryResponse findById(@PathVariable Long id) {
-//    SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+    //    SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
     return service.findById(id);
   }
 

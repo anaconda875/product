@@ -18,25 +18,25 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf()
-      .disable()
-      .authorizeRequests()
-      .anyRequest()
-      .authenticated()
-      .and()
-      .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+        .disable()
+        .authorizeRequests()
+        .anyRequest()
+        .authenticated()
+        .and()
+        .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
 
-//    http.addFilterBefore()
+    //    http.addFilterBefore()
     return http.build();
   }
 
   @Bean
   JwtAuthenticationConverter jwtAuthenticationConverter() {
     JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
-    CustomJwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new CustomJwtGrantedAuthoritiesConverter();
+    CustomJwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter =
+        new CustomJwtGrantedAuthoritiesConverter();
     jwtGrantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
     converter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
 
     return converter;
   }
-
 }
