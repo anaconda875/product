@@ -15,4 +15,9 @@ spring:
 #    show-sql: true
   liquibase:
     change-log: classpath:/master/changelog-master.xml
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:9990/realms/Product/protocol/openid-connect/certs
 #    enabled: false
