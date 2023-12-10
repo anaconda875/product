@@ -3,6 +3,12 @@ logging:
     net.ttddyy.dsproxy.listener: debug
 
 spring:
+  cloud:
+    stream:
+      bindings:
+        pay-out-0:
+          destination: pay
+          binder: kafka
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://localhost:3311/productdb

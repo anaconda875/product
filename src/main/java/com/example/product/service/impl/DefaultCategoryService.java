@@ -18,7 +18,7 @@ import org.springframework.util.CollectionUtils;
 
 @Service
 @RequiredArgsConstructor
-public class DefaultCategoryService implements CategoryService, UniqueValidationService<String> {
+public class DefaultCategoryService implements CategoryService, UniqueValidationService {
 
   private final CategoryRepository repository;
 
@@ -57,9 +57,6 @@ public class DefaultCategoryService implements CategoryService, UniqueValidation
             first.getId(), first.getName(), buildChildren(first.getId(), parentMap));
 
     return result;
-    //    return repository.findById(id).map(this::toResponse)
-    //      .orElseThrow(() -> new ResourceNotFoundException(String.format("Category with id [%d] is
-    // not found", id)));
   }
 
   @Override
@@ -102,12 +99,17 @@ public class DefaultCategoryService implements CategoryService, UniqueValidation
   }
 
   @Override
-  public List<String> findInvalidFields(String name) {
+  public List<String> findInvalidFields(Long id, Map<String, Object> fields) {
+    //question:
+    //1. why do we need to care about the case create and update based on the Id field?
+    //2. if user use api update with the Id field -> what should we do?
+
+    String name = (String) fields.get("name");
     int count = repository.countByName(name);
-    if (count > 0) {
-      return List.of("name");
+    if(count > 0) {
+      return List.of(name);
     }
 
-    return List.of();
+    return Collections.emptyList();
   }
 }

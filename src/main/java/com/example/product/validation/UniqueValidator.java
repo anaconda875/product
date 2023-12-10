@@ -1,7 +1,7 @@
 package com.example.product.validation;
 
 import com.example.product.annotation.Unique;
-import com.example.product.dto.UniqueIdenfiable;
+import com.example.product.dto.UniqueIdentifiable;
 import com.example.product.service.UniqueValidationService;
 import java.util.List;
 import javax.validation.ConstraintValidator;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class UniqueValidator implements ConstraintValidator<Unique, UniqueIdenfiable> {
+public class UniqueValidator implements ConstraintValidator<Unique, UniqueIdentifiable> {
 
   private final ApplicationContext context;
 
@@ -25,8 +25,8 @@ public class UniqueValidator implements ConstraintValidator<Unique, UniqueIdenfi
   }
 
   @Override
-  public boolean isValid(UniqueIdenfiable value, ConstraintValidatorContext context) {
-    List<String> invalidFields = validationService.findInvalidFields(value.getId());
+  public boolean isValid(UniqueIdentifiable value, ConstraintValidatorContext context) {
+    List<String> invalidFields = validationService.findInvalidFields(value.getIdToCheck(), value.getUniqueFields());
     if (invalidFields == null || invalidFields.isEmpty()) {
       return true;
     }
